@@ -8,6 +8,10 @@ class Category(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
 
+    class Meta:
+        verbose_name_plural = "Categories"
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
@@ -20,6 +24,10 @@ class Item(models.Model):
         Category, related_name="items", on_delete=models.CASCADE
     )
     is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
 
     def __str__(self):
         return self.name
