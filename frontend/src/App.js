@@ -1,33 +1,25 @@
-import React, { useState, useEffect } from "react";
-import Catalog from "./components/Catalog";
-import Cart from "./components/Cart";
-import Orders from "./components/Orders";
-import "./styles.css";
+import React from "react";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+
+import Header from "./components/Header"
+import Catalog from "./pages/Catalog";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import OrdersPage from "./pages/OrdersPage";
 
 function App() {
-  const [token, setToken] = useState("");
-
-  // Получаем токен при запуске
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/v1/auth/token/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: "admin", password: "admin" }),
-    })
-      .then(res => res.json())
-      .then(data => setToken(data.access));
-  }, []);
-
-  return (
-    <div className="app-container">
-      <h1>BD Shop</h1>
-      <div className="main-grid">
-        <Catalog token={token} />
-        <Cart token={token} />
-        <Orders token={token} />
-      </div>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Header/>
+            <Routes>
+                <Route path="/" element={<h2>Promotional Banner</h2>}/>
+                <Route path="/catalog" element={<Catalog />}/>
+                <Route path="/cart" element={<Cart />}/>
+                <Route path="/checkout" element={<Checkout />}/>
+                <Route path="/orders" element={<OrdersPage />}/>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
