@@ -18,7 +18,7 @@ class Category(models.Model):
 
 class Item(models.Model):
     name = models.CharField(max_length=150)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     price = models.PositiveIntegerField(help_text="Price in silver")
     category = models.ForeignKey(
         Category, related_name="items", on_delete=models.CASCADE

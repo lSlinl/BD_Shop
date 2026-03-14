@@ -14,8 +14,19 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
+    date = serializers.DateTimeField(source="created_at", read_only=True)
+    total = serializers.IntegerField(source="total_price", read_only=True)
 
     class Meta:
         model = Order
-        fields = ("id", "user", "status", "total_price", "created_at", "items")
+        fields = (
+            "id",
+            "date",
+            "total",
+            "address",
+            "comment",
+            "status",
+            "created_at",
+            "items",
+        )
         read_only_fields = ("total_price", "created_at", "status")

@@ -24,6 +24,8 @@ class Order(models.Model):
         max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING
     )
     total_price = models.PositiveIntegerField(default=0)
+    address = models.CharField(default="", max_length=100)
+    comment = models.TextField(default="Без комментариев")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def cancel(self):

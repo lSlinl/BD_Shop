@@ -5,8 +5,11 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from apps.cart.models import Cart, CartItem
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from .models import Order, OrderItem
 from .serializers import OrderSerializer
+from rest_framework.views import APIView
 
 
 # Create your views here.
@@ -14,24 +17,41 @@ from .serializers import OrderSerializer
 
 class CreateOrderView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def post(self, request):
-        cart = Cart.objects.get(user=request.user)
+        cart, created = Cart.objects.get_or_create(user=request.user)
+
         if not cart.items.exists():
             return Response(
-                {"detail": "Cart is empty"}, status=status.HTTP_400_BAD_REQUEST
+                {"detail": "Cart is empty"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         total_price = 0
+
         for cart_item in cart.items.all():
-            if not cart_item.is_active:
+            if not cart_item.item.is_active:
                 return Response(
                     {"detail": f"Item {cart_item.item.name} is inactive"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+
             total_price += cart_item.item.price * cart_item.quantity
 
-        order = Order.objects.create(user=request.user, total_price=cart.total_price())
+        address = request.data.get("address")
+        if not address:
+            return Response(
+                {"detail": "Address is empty"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        order = Order.objects.create(
+            user=request.user,
+            total_price=total_price,
+            address=request.data.get("address"),
+            comment=request.data.get("comment", ""),
+        )
 
         for cart_item in cart.items.all():
             OrderItem.objects.create(
@@ -41,15 +61,17 @@ class CreateOrderView(APIView):
                 price=cart_item.item.price,
             )
 
-        # очистка корзины после оформления
         cart.items.all().delete()
+        cart.total_price = 0
+        cart.save()
 
         serializer = OrderSerializer(order)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"results": serializer.data})
 
 
 class UserOrdersView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request):
         orders = Order.objects.filter(user=request.user).order_by("-created_at")
@@ -59,6 +81,7 @@ class UserOrdersView(APIView):
 
 class CancelOrderView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def post(self, request, order_id):
         try:

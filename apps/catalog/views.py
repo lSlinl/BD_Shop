@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django_filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from .models import Category, Item
 from .serializers import CategorySerializer, ItemSerializer
@@ -18,9 +21,22 @@ class ItemViewSet(ModelViewSet):
     queryset = Item.objects.filter(is_active=True)
     serializer_class = ItemSerializer
     filter_backends = [SearchFilter]
-    search_fields = ["name", "description"]
+    search_fields = ["name", "description", "category__name"]
 
     def get_permissions(self):
         if self.action in ["list", "retrieve"]:
             return [AllowAny()]
         return [IsAdminUser()]
+
+
+class ItemListView(generics.ListAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    filter_backends = [
+        SearchFilter,
+        OrderingFilter,
+        DjangoFilterBackend,
+    ]
+    filter_fields = ["category"]
+    search_fields = ["name", "description", "category__name"]
+    ordering_fields = ["price", "created_at"]

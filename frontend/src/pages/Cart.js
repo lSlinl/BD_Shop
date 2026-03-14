@@ -1,53 +1,49 @@
-import React, {useContext} from "react";
-import {CartContext} from "../context/CartContext";
-import CartItemCard from "../components/CartItemCard";
+import React, { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
 function CartPage() {
-    const {cart, setCart} = useContext(CartContext);
-    const navigate = useNavigate();
+  const { cart, updateItem, removeItem } = useContext(CartContext);
+  const navigate = useNavigate();
+// console.log("Новые items после fetch:", cart.items.map(i => ({id: i.id, name: i.item.name})));
+  if (!cart || cart.items.length === 0) {
+    return <p>Ваша корзина пуста.</p>;
+  }
 
-    const updateQuantity = (id, newQuantity) => {
-        if (newQuantity < 1) return;
-        setCart(cart.map(item =>
-            item.id === id ? {...item, quantity: newQuantity} : item
-        ));
-    };
+  return (
+    <div style={{ padding: "24px" }}>
+      <h2>Корзина</h2>
 
-    const removeItem = (id) => {
-        setCart(cart.filter(item => item.id !== id));
-    };
+      {cart.items.map((item) => (
+        <div key={item.id} style={{ marginBottom: "16px", border: "1px solid #444", padding: "12px", borderRadius: "8px" }}>
+          <h4>{item.item.name}</h4>
+          <p>{item.item.price} silver x {item.quantity} = {item.item.price * item.quantity} silver</p>
 
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+          <button onClick={() => updateItem(item.id, item.quantity - 1)}> - </button>
 
-    if (cart.length === 0) {
-        return <p>Ваша корзина пуста.</p>;
-    }
+          <span style={{ margin: "0 12px", fontWeight: "bold" }}>{item.quantity}</span>
 
-    return (
-        <div style={{padding: "24px"}}>
-            <h2>Корзина</h2>
+          <button onClick={() => updateItem(item.id, item.quantity + 1)}> + </button>
 
-            {cart.map(item => (
-                <CartItemCard
-                    key={item.id}
-                    item={item}
-                    updateQuantity={updateQuantity}
-                    removeItem={removeItem}
-                />
-            ))}
-
-            <h3>Итого: {total} silver</h3>
-
-            <button
-                onClick={() => navigate("/checkout")}
-                style={{marginTop: "16px", padding: "6px 12px"}}
-            >
-                Перейти к оформлению
-            </button>
-
+          <button
+            onClick={() => removeItem(item.id)}
+            style={{ marginLeft: "16px", color: "#ff5252" }}
+          >
+            Удалить
+          </button>
         </div>
-    );
+      ))}
+
+      <h3>Итого: {cart.total_price} silver</h3>
+
+      <button
+        onClick={() => navigate("checkout")}
+        style={{ marginTop: "16px" }}
+      >
+        Перейти к оформлению
+      </button>
+    </div>
+  );
 }
 
 export default CartPage;

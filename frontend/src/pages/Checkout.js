@@ -1,108 +1,85 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
-import { OrdersContext } from "../context/OrdersContext";
-import CartItemCard from "../components/CartItemCard";
+import { AuthContext } from "../context/AuthContext";
+import api from "../api/api";
 
-function CheckoutPage() {
-  const { cart, setCart } = useContext(CartContext);
-  const { orders, setOrders } = useContext(OrdersContext);
+function Checkout() {
+  const { cart, fetchCart } = useContext(CartContext);
+  const { access } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity < 1) return;
-    setCart(cart.map(item =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    ));
-  };
+  const total = cart?.total_price || 0;
 
-  const removeItem = (id) => {
-    setCart(cart.filter(item => item.id !== id));
-  };
-
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!address) return alert("Введите адрес доставки!");
 
-    const newOrder = {
-      id: Date.now(),
-      items: [...cart],
-      total,
-      address,
-      comment,
-      date: new Date().toLocaleString(),
-    };
+    if (!access) {
+      alert("Войдите, чтобы оформить заказ");
+      return;
+    }
+    if (!cart?.items?.length) {
+        alert("Корзина пуста");
+        return;
+    }
 
-    setOrders([...orders, newOrder]);
-    setCart([]); // очистка корзины
-    setSuccess(true);
+    setLoading(true);
+
+    try {
+      await api.post(
+        "orders/create/",
+        {address,comment,});
+
+      await fetchCart(); // обновляем корзину после оформления
+      navigate("/orders");
+    } catch (error) {
+      console.error("Ошибка оформления заказа", error);
+      alert("Ошибка оформления заказа. Попробуйте ещё раз.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Если заказ оформлен, показываем сообщение
-  if (success) {
-    return (
-      <div style={{ padding: "24px" }}>
-        <h2>Заказ успешно оформлен!</h2>
-        <p>Итого: {total} silver</p>
-        <p>Адрес доставки: {address}</p>
-        <p>Комментарий: {comment}</p>
-      </div>
-    );
+  if (!cart?.items?.length) {
+    return <p>Ваша корзина пуста.</p>;
   }
 
   return (
     <div style={{ padding: "24px" }}>
       <h2>Оформление заказа</h2>
+      <p><b>Итого:</b> {total} silver</p>
 
-      {cart.length === 0 ? (
-        <p>Ваша корзина пуста. Добавьте товары из каталога.</p>
-      ) : (
-        <>
-          {cart.map(item => (
-            <CartItemCard
-              key={item.id}
-              item={item}
-              updateQuantity={updateQuantity}
-              removeItem={removeItem}
-            />
-          ))}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Адрес доставки:</label><br />
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+            style={{ width: "300px", marginBottom: "12px" }}
+          />
+        </div>
 
-          <h3>Итого: {total} silver</h3>
+        <div>
+          <label>Комментарий (опционально):</label><br />
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            style={{ width: "300px", marginBottom: "12px" }}
+          />
+        </div>
 
-          {/* Форма оформления заказа */}
-          <form onSubmit={handleSubmit} style={{ marginTop: "16px" }}>
-            <div>
-              <label>Адрес доставки:</label><br/>
-              <input
-                type="text"
-                value={address}
-                onChange={e => setAddress(e.target.value)}
-                required
-                style={{ width: "300px", padding: "4px", marginTop: "4px" }}
-              />
-            </div>
-
-            <div style={{ marginTop: "8px" }}>
-              <label>Комментарий:</label><br/>
-              <textarea
-                value={comment}
-                onChange={e => setComment(e.target.value)}
-                style={{ width: "300px", padding: "4px", marginTop: "4px" }}
-              />
-            </div>
-
-            <button type="submit" style={{ marginTop: "12px", padding: "6px 12px" }}>
-              Подтвердить заказ
-            </button>
-          </form>
-        </>
-      )}
+        <button type="submit" disabled={loading}>
+          {loading ? "Оформление..." : "Подтвердить заказ"}
+        </button>
+      </form>
     </div>
   );
 }
 
-export default CheckoutPage;
+export default Checkout;

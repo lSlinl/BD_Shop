@@ -4,16 +4,16 @@ import './styles.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {CartProvider} from "./context/CartContext";
-import {OrdersProvider} from "./context/OrdersContext";
+import {AuthProvider} from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <OrdersProvider>
+        <AuthProvider>
             <CartProvider>
                 <App/>
             </CartProvider>
-        </OrdersProvider>
+        </AuthProvider>
     </React.StrictMode>
 );
 

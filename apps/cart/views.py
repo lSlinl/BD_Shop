@@ -3,7 +3,9 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
+from rest_framework import status, viewsets
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from .models import Cart, CartItem
 from apps.catalog.models import Item
 from .serializers import CartSerializer
@@ -13,6 +15,7 @@ from .serializers import CartSerializer
 
 class CartView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request):
         cart, _ = Cart.objects.get_or_create(user=request.user)
@@ -61,3 +64,45 @@ class ClearCartView(APIView):
         cart = Cart.objects.get(user=request.user)
         cart.items.all().delete()
         return Response({"detail": "Cart cleared"})
+
+
+class CartViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        cart, _ = Cart.objects.get_or_create(user=request.user)
+        serializer = CartSerializer(cart)
+        return Response(serializer.data)
+
+    def add_item(self, request):
+        cart, _ = Cart.objects.get_or_create(user=request.user)
+        item_id = request.data.get("item_id")
+        quantity = int(request.data.get("quantity", 1))
+        item = Item.objects.get(id=item_id)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item)
+        if not created:
+            cart_item.quantity += quantity
+        else:
+            cart_item.quantity = quantity
+        cart_item.save()
+        serializer = CartSerializer(cart)
+        return Response(serializer.data)
+
+    def update_item(self, request, pk=None):
+        cart, _ = Cart.objects.get_or_create(user=request.user)
+        cart_item = CartItem.objects.get(id=pk, cart=cart)
+        quantity = int(request.data.get("quantity", cart_item.quantity))
+        if quantity < 1:
+            cart_item.delete()
+        else:
+            cart_item.quantity = quantity
+            cart_item.save()
+        serializer = CartSerializer(cart)
+        return Response(serializer.data)
+
+    def delete_item(self, request, pk=None):
+        cart, _ = Cart.objects.get_or_create(user=request.user)
+        cart_item = CartItem.objects.get(id=pk, cart=cart)
+        cart_item.delete()
+        serializer = CartSerializer(cart)
+        return Response(serializer.data)
