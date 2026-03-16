@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import RegisterSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from .serializers import UserUpdateSerializer, UserSerializer
 
 
 # Create your views here.
@@ -40,10 +41,17 @@ class MeView(APIView):
             }
         )
 
+
+class MyViewUpdate(APIView):
+    permission_classes = [IsAuthenticated]
+
     def patch(self, request):
-        user = self.request.user
+        user = request.user
         serializer = UserUpdateSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(UserCabinetSerializer(user).data)
-        return Response(serializer.errors, status=400)
+            user.refresh_from_db()
+            response_data = UserSerializer(user).data
+            return Response(response_data)
+        else:
+            return Response(serializer.errors, status=400)

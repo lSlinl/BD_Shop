@@ -36,9 +36,26 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "phone", "avatar"]
+        fields = [
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "address",
+            "role",
+            "avatar",
+            "date_joined",
+        ]
+        read_only_fields = ["id", "username", "email", "date_joined", "role"]
 
-        def validate_phone(self, value):
-            if value and not value.replace("+", "").replace("-", "").isdigit():
-                raise serializers.ValidationError("Неверный формат телефона")
-            return value
+    def validate_phone(self, value):
+        if value and not value.replace("+", "").replace("-", "").isdigit():
+            raise serializers.ValidationError("Неверный формат телефона")
+        return value
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "address"]
