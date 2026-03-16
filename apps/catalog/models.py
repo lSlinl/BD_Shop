@@ -7,9 +7,11 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, null=True)
+    index = [models.Index(fields=["slug"])]
 
     class Meta:
-        verbose_name_plural = "Categories"
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
         ordering = ["name"]
 
     def __str__(self):
@@ -19,7 +21,9 @@ class Category(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
-    price = models.PositiveIntegerField(help_text="Price in silver")
+    price = models.PositiveIntegerField(
+        help_text="Цена в серебре", default=1
+    )  # Цена в серебре без копеек
     category = models.ForeignKey(
         Category, related_name="items", on_delete=models.CASCADE
     )

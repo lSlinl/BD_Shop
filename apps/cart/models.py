@@ -24,7 +24,9 @@ class Cart(models.Model):
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(
+        help_text="Цена в серебре", default=1
+    )  # Цена в серебре без копеек.
 
     class Meta:
         unique_together = ("cart", "item")

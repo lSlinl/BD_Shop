@@ -29,14 +29,14 @@ class ItemViewSet(ModelViewSet):
         return [IsAdminUser()]
 
 
-class ItemListView(generics.ListAPIView):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
-    filter_backends = [
-        SearchFilter,
-        OrderingFilter,
-        DjangoFilterBackend,
-    ]
-    filter_fields = ["category"]
-    search_fields = ["name", "description", "category__name"]
-    ordering_fields = ["price", "created_at"]
+# class ItemListView(generics.ListAPIView):
+#     queryset = Item.objects.all()
+#     serializer_class = ItemSerializer
+#     filter_backends = [
+#         SearchFilter,
+#         OrderingFilter,
+#         DjangoFilterBackend,
+#     ]
+#     filter_fields = ["category"]
+#     search_fields = ["name", "description", "category__name"]
+#     ordering_fields = ["price", "created_at"]
