@@ -14,10 +14,10 @@ class Order(models.Model):
     STATUS_CANCELLED = "cancelled"
 
     STATUS_CHOICES = [
-        (STATUS_PENDING, "Pending"),
-        (STATUS_PROCESSING, "Processing"),
-        (STATUS_COMPLETED, "Completed"),
-        (STATUS_CANCELLED, "Cancelled"),
+        (STATUS_PENDING, "Ожидает"),
+        (STATUS_PROCESSING, "В обработке"),
+        (STATUS_COMPLETED, "Завершен"),
+        (STATUS_CANCELLED, "Отменен"),
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="order")
     status = models.CharField(
@@ -37,7 +37,7 @@ class Order(models.Model):
         return False
 
     def __str__(self):
-        return f"Order {self.id} by {self.user}"
+        return f"Заказ {self.id} от {self.user.username}"
 
 
 class OrderItem(models.Model):

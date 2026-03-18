@@ -6,30 +6,30 @@
     --dark-bg: #0f0f12;
     --dark-bg-secondary: #1a1a1f;
     --dark-bg-tertiary: #25252d;
-    
-    --accent-primary: #7e57c2;    /* Фиолетовый акцент */
+
+    --accent-primary: #7e57c2; /* Фиолетовый акцент */
     --accent-primary-hover: #9575cd;
-    --accent-secondary: #ff5252;  /* Красный для кнопок/акций */
-    
+    --accent-secondary: #ff5252; /* Красный для кнопок/акций */
+
     --text-primary: #ffffff;
     --text-secondary: #b8b8c3;
     --text-muted: #7a7a85;
-    
+
     --border-color: #31313a;
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-    
+
     /* Градиенты */
     --gradient-primary: linear-gradient(135deg, #7e57c2, #5e35b1);
     --gradient-secondary: linear-gradient(135deg, #2979ff, #1a237e);
-    
+
     /* Радиусы */
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
     --radius-full: 999px;
-    
+
     /* Переходы */
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
@@ -41,6 +41,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 main {
     flex: 1;
 }
@@ -186,10 +187,10 @@ body {
 }
 
 .cart-link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 12px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
 }
 
 .cart-badge {
@@ -205,8 +206,9 @@ body {
     border-radius: 50%;
     display: flex;
     align-items: center;
-    justify-content: center;box-shadow: 0 1px 4px rgba(0,0,0,0.4);
-  pointer-events: none;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
 }
 
 /* ======================
@@ -214,7 +216,7 @@ body {
    ====================== */
 .hero {
     background: linear-gradient(rgba(15, 15, 18, 0.85), rgba(25, 25, 32, 0.9)),
-                url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1600');
+    url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1600');
     background-size: cover;
     background-position: center;
     height: 500px;
@@ -489,20 +491,20 @@ body {
     .nav-menu {
         display: none;
     }
-    
+
     .hero h1 {
         font-size: 36px;
     }
-    
+
     .section {
         padding: 40px 20px;
     }
-    
+
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 20px;
     }
-    
+
     .product-img-container {
         height: 180px;
     }
@@ -512,19 +514,19 @@ body {
     .hero {
         height: 400px;
     }
-    
+
     .hero h1 {
         font-size: 28px;
     }
-    
+
     .nav-container {
         height: 60px;
     }
-    
+
     .products-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .footer-container {
         grid-template-columns: 1fr;
     }
@@ -534,56 +536,74 @@ body {
    АНИМАЦИИ
    ====================== */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .product-card {
     animation: fadeIn 0.5s ease forwards;
 }
 
-.product-card:nth-child(1) { animation-delay: 0.1s; }
-.product-card:nth-child(2) { animation-delay: 0.2s; }
-.product-card:nth-child(3) { animation-delay: 0.3s; }
-.product-card:nth-child(4) { animation-delay: 0.4s; }
+.product-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.product-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.product-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.product-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
 
 .text-area {
-  background-color: #1e1e1e;
-  border: 1px solid #3a3a3a;
-  border-radius: 8px;
-  color: #e6e6e6;
-  padding: 12px 16px;
-  width: 20%;
-  box-sizing: border-box;
-  font-family: inherit;
-  font-size: 14px;
-  line-height: 1;
-  min-height: 25px;
-  resize: vertical;
-  transition: all 0.25s ease;
+    background-color: #1e1e1e;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    color: #e6e6e6;
+    padding: 12px 16px;
+    width: 20%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1;
+    min-height: 25px;
+    resize: vertical;
+    transition: all 0.25s ease;
 }
 
 .text-area::placeholder {
-  color: #a0a0a0;
-  opacity: 1;
+    color: #a0a0a0;
+    opacity: 1;
 }
 
 .text-area:hover {
-  border-color: #555;
+    border-color: #555;
 }
 
 .text-area:focus {
-  outline: none;
-  border-color: #5e9ed6;
-  box-shadow: 0 0 0 3px rgba(94, 158, 214, 0.25);
+    outline: none;
+    border-color: #5e9ed6;
+    box-shadow: 0 0 0 3px rgba(94, 158, 214, 0.25);
 }
 
 .text-area:disabled {
-  background-color: #2a2a2a;
-  color: #7a7a7a;
-  cursor: not-allowed;
-  opacity: 0.9;
+    background-color: #2a2a2a;
+    color: #7a7a7a;
+    cursor: not-allowed;
+    opacity: 0.9;
 }
+
 /* ======================
    ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ
    ====================== */
@@ -672,14 +692,29 @@ body {
     animation: pulse 2s infinite;
 }
 
-.status-dot.active { background: #4ade80; }
-.status-dot.pending { background: #fbbf24; }
-.status-dot.banned { background: #f87171; }
-.status-dot.offline { background: var(--text-muted); }
+.status-dot.active {
+    background: #4ade80;
+}
+
+.status-dot.pending {
+    background: #fbbf24;
+}
+
+.status-dot.banned {
+    background: #f87171;
+}
+
+.status-dot.offline {
+    background: var(--text-muted);
+}
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
 }
 
 /* Сетка данных профиля */
@@ -857,7 +892,9 @@ body {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Сообщение об ошибке/пустом состоянии */
@@ -949,4 +986,22 @@ body {
     .section {
         padding: 40px 16px;
     }
+}
+
+.order-status-badge {
+    background: #2a2a2f;
+    color: #fff;
+    border: 1px solid #7e57c2;      /* 🔹 Исправлено: border вместо border-style */
+    border-radius: 4px;              /* 🔹 kebab-case вместо camelCase */
+    padding: 2px 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.order-status-badge:hover {
+    background: #7e57c2;
+    color: #fff;
+    transform: translateY(-1px);
 }
