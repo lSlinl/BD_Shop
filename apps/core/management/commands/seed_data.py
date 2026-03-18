@@ -5,7 +5,7 @@ from apps.cart.models import Cart, CartItem
 
 
 class Command(BaseCommand):
-    help = "Seed test data for BD Shop"
+    help = "Seed test date for BD Shop"
 
     def handle(self, *args, **kwargs):
         # Создаем пользователей

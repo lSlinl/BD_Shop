@@ -27,8 +27,8 @@ class AddToCartView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        item_id = request.data.get("item_id")
-        quantity = int(request.data.get("quantity", 1))
+        item_id = request.date.get("item_id")
+        quantity = int(request.date.get("quantity", 1))
 
         item = Item.objects.get(id=item_id)
         cart, _ = Cart.objects.get_or_create(user=request.user)
@@ -49,7 +49,7 @@ class RemoveFromCartView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        item_id = request.data.get("item_id")
+        item_id = request.date.get("item_id")
         cart = Cart.objects.get(user=request.user)
 
         CartItem.objects.filter(cart=cart, item_id=item_id).delete()
@@ -76,8 +76,8 @@ class CartViewSet(viewsets.ViewSet):
 
     def add_item(self, request):
         cart, _ = Cart.objects.get_or_create(user=request.user)
-        item_id = request.data.get("item_id")
-        quantity = int(request.data.get("quantity", 1))
+        item_id = request.date.get("item_id")
+        quantity = int(request.date.get("quantity", 1))
         item = Item.objects.get(id=item_id)
         cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item)
         if not created:
@@ -91,7 +91,7 @@ class CartViewSet(viewsets.ViewSet):
     def update_item(self, request, pk=None):
         cart, _ = Cart.objects.get_or_create(user=request.user)
         cart_item = CartItem.objects.get(id=pk, cart=cart)
-        quantity = int(request.data.get("quantity", cart_item.quantity))
+        quantity = int(request.date.get("quantity", cart_item.quantity))
         if quantity < 1:
             cart_item.delete()
         else:

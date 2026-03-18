@@ -13,9 +13,7 @@ class User(AbstractUser):
     address = models.CharField(
         verbose_name="Адрес", max_length=50, null=True, blank=True
     )
-
-    REQUIRED_FIELDS = ["email"]
-    USERNAME_FIELD = "username"
+    is_staff = models.BooleanField(default=False)
 
     @property
     def is_admin(self):

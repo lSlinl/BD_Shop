@@ -1,6 +1,5 @@
-// src/components/Profile.jsx
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import api from "../api/api";
 
@@ -151,7 +150,7 @@ function Profile() {
               ✏️ Редактировать
             </button>
             <button className="btn" onClick={handleOrdersClick}>
-              📦 Мои заказы
+              📦 Заказы
             </button>
           </div>
         </>
