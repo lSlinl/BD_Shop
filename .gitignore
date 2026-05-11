@@ -1,0 +1,47 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# Node.js / npm
+node_modules/
+package-lock.json
+
+# IDE settings
+.idea/
+.vscode/
+.vs/
+.venv/
+
+# Build artifacts
+dist/
+build/
+
+# Log files
+*.log
+*.tmp
+
+# Temporary files
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+
+# Editor-specific files
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Miscellaneous
+.env
+.env.local
+.secrets.json
+env/
+avatar/
+__pycache__/
+*.pyc
