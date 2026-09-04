@@ -131,7 +131,7 @@ function OrdersPage() {
             ) : (
                 <p>У вас пока нет заказов</p>
             )}
-        < /div>
+        </div>
     );
 }
 

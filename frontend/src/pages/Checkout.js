@@ -55,7 +55,7 @@ function Checkout() {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Адрес доставки:</label><br />
+          <label>Эклектронный адрес:</label><br />
           <input
             type="text"
             value={address}

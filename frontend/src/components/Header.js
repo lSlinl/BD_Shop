@@ -17,13 +17,13 @@ function Header() {
 
                 <nav className="nav-menu">
                     <Link to="/catalog" className="nav-link">Каталог</Link>
-                    <Link to="/cart">Корзина</Link>
-                    <Link to="/orders">Заказы</Link>
+                    <Link to="/cart" className="nav-link">Корзина</Link>
+                    <Link to="/orders" className="nav-link">Заказы</Link>
                 </nav>
                 <div className="nav-actions" align="right">
                     {user ? (
                         <>
-                            <Link to="/profile"><span>Привет, {user.username}</span></Link>
+                            <Link to="/profile" className="nav-link"><span>Привет, {user.username}</span></Link>
                             <button className="btn" onClick={logout}>Выход</button>
                         </>
                     ) : (

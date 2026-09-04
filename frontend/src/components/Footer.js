@@ -6,7 +6,7 @@ function Footer() {
       <div className="footer-container">
         <p>&copy; 2026 BDO Shop. All rights reserved.</p>
         <nav>
-          <a href="/about">About</a> | <a href="/contact">Contact</a> | <a href="/privacy">Privacy</a>
+          <a href="/about">О нас</a> | <a href="/contact">Контакты</a> | <a href="/privacy">Политика конфиденциальности</a>
         </nav>
       </div>
     </footer>
