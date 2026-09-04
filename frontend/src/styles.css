@@ -12,7 +12,7 @@
     --accent-secondary: #ff5252; /* Красный для кнопок/акций */
 
     --text-primary: #ffffff;
-    --text-secondary: #b8b8c3;
+    --text-secondary: #530680;
     --text-muted: #7a7a85;
 
     --border-color: #31313a;
@@ -1004,4 +1004,16 @@ body {
     background: #7e57c2;
     color: #fff;
     transform: translateY(-1px);
+}
+
+/* Или глобально для всего сайта */
+body {
+  user-select: none;
+  cursor: default;
+}
+
+/* Но оставляем возможность редактировать реальные поля */
+input, textarea, select, [contenteditable="true"] {
+  user-select: text;
+  cursor: text;
 }

@@ -76,8 +76,8 @@ class CartViewSet(viewsets.ViewSet):
 
     def add_item(self, request):
         cart, _ = Cart.objects.get_or_create(user=request.user)
-        item_id = request.date.get("item_id")
-        quantity = int(request.date.get("quantity", 1))
+        item_id = request.data.get("item_id")
+        quantity = int(request.data.get("quantity", 1))
         item = Item.objects.get(id=item_id)
         cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item)
         if not created:
